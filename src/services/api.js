@@ -29,3 +29,11 @@ export async function fetchData(type, endpoint, body){
     return res;
 }
 
+export const fixTimeZone = (dateString) => {
+    const localDate = new Date(dateString);
+    const timezoneOffset = localDate.getTimezoneOffset() * 60 * 1000;
+    const utcDate = new Date(localDate.getTime() - timezoneOffset);
+
+    return utcDate.toISOString();
+}
+

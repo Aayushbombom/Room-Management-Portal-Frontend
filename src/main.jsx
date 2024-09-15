@@ -14,8 +14,8 @@ import Book from './components/Book.jsx'
 import ProfilePage from './components/ProfilePage.jsx'
 
 import Admin from './pages/Admin.jsx'
-import RoomList from './components/RoomList.jsx'
-import UserList from './components/UserList.jsx'
+import RoomList from './components/Admin/RoomList.jsx'
+import UserList from './components/Admin/UserList.jsx'
 
 
 const router = createBrowserRouter(

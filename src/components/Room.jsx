@@ -13,7 +13,7 @@ import {
   } from "@/components/ui/dialog"
 import { Label } from './ui/label'
 import { fetchData } from '@/services/api'
-const Room = ({type,id,toast,children,body, actions}) => {
+const Room = ({type, id, toast, children, body, actions}) => {
   
     const [date, setDate] = useState(body.dateOfBooking.split('T')[0]);
     const [from, setFrom] = useState(body.timeFrom);
@@ -124,8 +124,7 @@ const Room = ({type,id,toast,children,body, actions}) => {
                     <Button onClick={handleBooking} disabled={buttonState}>{type}</Button>
                 </DialogFooter>
             </DialogContent>
-        </Dialog>
-       
+        </Dialog>   
     </>
   )
 }

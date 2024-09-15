@@ -22,16 +22,18 @@ const User = () => {
 export default User
 
 export const userLoader = async () => {
-  try{
-    const res = await fetch(`http://localhost:5000/api/user`,{
-      headers: {"content-type": "application/json"},
-      credentials: 'include',
-    });
-    return res.json();
-  }
-  catch(e){
-     redirect('/');
-  }
-  
-  return null;
+
+   try{
+      const res = await fetch(`http://localhost:5000/api/user`,{
+        headers: {"content-type": "application/json"},
+        credentials: 'include',
+      });
+
+      return res.json();
+   }
+   catch(e){
+      return redirect('/');
+   }
+
+   return null;
 }

@@ -1,14 +1,13 @@
-    import React from 'react'
-    
-    import { Button } from '@/components/ui/button'
+import React from 'react'   
+import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
     
-    const Home = () => {
-        const navigate = useNavigate();
+const Home = () => {
+    const navigate = useNavigate();
 
-        const handleClick = () => {
-            navigate('/login');
-        }
+    const handleClick = () => {
+        navigate('/login');
+    }
     return (
         <>
         <div className="jumbotron bg-secondary">

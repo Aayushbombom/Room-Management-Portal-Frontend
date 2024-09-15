@@ -11,11 +11,14 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { Navigate, NavLink, redirect, useNavigate } from 'react-router-dom'
+import { NavLink, redirect, useNavigate } from "react-router-dom"
+import { Checkbox } from '@/components/ui/checkbox'
+
 ///^[A-Za-z\._\-0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/ -> For Email Validation
 const Login = () => {
       const [email, setEmail] = useState('');
       const [password, setPassword] = useState('');
+      const [isAdmin, setIsAdmin] = useState(false);
 
       const [emailErr, setEmailErr] = useState('');
       const [passErr, setPassErr] = useState('');
@@ -44,10 +47,10 @@ const Login = () => {
 
             const loginReq = {email,password};
           try{
-            const res = await fetchData('POST', '/api/user/login', loginReq);
+            const res = await fetchData('POST', `/api/user/login?isAdmin=${isAdmin}`, loginReq);
             const data = await res.json();
             if(data.Error != undefined){
-                setAlertMsg(res.Error);
+                setAlertMsg(data.Error);
                 setAlertActive('');
 
                 setTimeout(() => {
@@ -63,7 +66,10 @@ const Login = () => {
                 }, 3000);
             }
             else{
-                navigate('/user');
+                if(isAdmin)
+                    navigate('/admin');
+                else
+                    navigate('/user');
             }
           }
           catch(e){
@@ -101,9 +107,17 @@ const Login = () => {
                   <Input type="password" id="password" placeholder="Password" onChange={e => setPassword(e.target.value)} onFocus={removeError} value={password}/>
                   <CardDescription className="text-destructive ml-3">{passErr}</CardDescription>
                 </div>
-                
                 <Button className="w-full" onClick={handleSubmit}>Login</Button>
-                <NavLink to="/signup" className="hover:underline"><CardDescription className="text-center mt-3">Not Registerd? Click Here to Register</CardDescription></NavLink>
+                <div className="items-top flex space-x-2 justify-center mb-16">
+                  <Checkbox id="checkAdmin" onClick={e => setIsAdmin(e.target.ariaChecked != 'true')}/>
+                    <label
+                      htmlFor="terms1"
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                      Login as Admin
+                    </label>
+                </div>
+                <NavLink to="/signup" className="hover:underline mt-20"><CardDescription className="text-center mt-3">Not Registerd? Click Here to Register</CardDescription></NavLink>
             </CardContent>    
         </Card>
     </>
@@ -116,8 +130,15 @@ export default Login
 export const loginLoader = async () => {
   try{
     const res = await fetchData("GET", "/api/checkjwt");
-    if(res.status == 200)
-      return redirect('/user');
+    if(res.status == 200){
+      const data = await res.json();
+      console.log(data);
+      if(data.type == 'Adminjwt')
+          return redirect('/admin');
+      else
+          return redirect('/user');
+    }
+      
   }
   catch(e){
      console.log("failed to fetch");
