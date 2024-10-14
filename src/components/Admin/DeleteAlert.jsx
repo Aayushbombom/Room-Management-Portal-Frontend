@@ -18,11 +18,12 @@ const DeleteAlert = ({Id, children, updater}) => {
     const [dialogOpen, setDialogOpen] = useState(false);
 
     const deleteRoom = async() => {
-        const room = {roomID: id};
         const res = await fetchData("DELETE", `/api/rooms?roomID=${id}`);
         const data = await res.json();
+        if(data.Error == null){
+            updater();
+        }
         setDialogOpen(false);
-        updater();
     }
   return (
     <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>

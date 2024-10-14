@@ -50,7 +50,6 @@ const UserHistory = ({userID, children}) => {
                 <div className="container">
                     <DrawerHeader>
                         <DrawerTitle>Booking History</DrawerTitle>
-                        <DrawerDescription>View Booking history of {}</DrawerDescription>
                     </DrawerHeader>
                     <Table className="w-full">
                     

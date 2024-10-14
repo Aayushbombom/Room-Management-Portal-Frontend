@@ -1,7 +1,7 @@
 
 
 export async function fetchData(type, endpoint, body){
-    const BASE_URL = "http://localhost:5000"
+    const BASE_URL = ""
     let data;
     let res;
     if(type == 'GET'){

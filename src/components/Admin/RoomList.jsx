@@ -11,9 +11,17 @@ import DeleteAlert from './DeleteAlert'
 const RoomList = () => {
     const [rooms, setRooms] = useState([]);
     const [searchWord, setSearchWord] = useState('');
-    const getRooms = async () => {
-        const res = await fetchData("GET", "/api/rooms");
-        const data = await res.json();
+
+    const getRooms = async (capacity = 0) => {
+        let res,data;
+        if(capacity == 0){
+            res = await fetchData("GET", "/api/rooms");
+            data = await res.json();
+        }
+        else{
+            res = await fetchData("GET", `/api/rooms?capacity=${capacity}`);
+            data = await res.json();
+        }
         data.sort((a, b) => a.roomID - b.roomID);
         setRooms(data);
     }
@@ -23,12 +31,16 @@ const RoomList = () => {
     useEffect(() => {
         getRooms();
     }, []);
+
+    useEffect(() => {
+        getRooms(searchWord);
+    }, [searchWord]);
     
   return (
     <>
     <div className="relative container space-y-10">
         <div className="search_bar w-full space-x-3 flex flex-row mt-10">
-            <Input type="text" placeholder="Type Room Name or Capacity to get Recommendations." value={searchWord} onChange={e => setSearchWord(e.target.value)}/>
+            <Input type="text" placeholder="Filter by capacity." value={searchWord} onChange={e => setSearchWord(e.target.value)}/>
             <Button>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                     <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
